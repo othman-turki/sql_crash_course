@@ -1,0 +1,85 @@
+/====================================================================================================
+    CRUD OPERATIONS (SQL)
+ ====================================================================================================/
+
+
+/====================================================================================================
+    C [R] U D - READ => SELECT (SQL)
+ ====================================================================================================
+
+    // GEL ALL ROWS
+    SELECT * FROM employees;
+
+    // GET MORE SPECIFIC ROWS
+    SELECT * FROM employees WHERE first_name = "Othman" AND last_name = "turki";
+
+    // GET THE MAXIMUM NUMBER IN COLUMN <emp_no>: 499999
+    SELECT MAX(emp_no) FROM employees;
+
+    // GET THE NUMBER OF ROWS: 300025
+    SELECT COUNT(emp_no) FROM employees;
+
+    // INNER JOIN
+    SELECT E.first_name, E.last_name, T.title
+    FROM employees AS E
+    INNER JOIN titles AS T
+    ON E.emp_no = T.emp_no;
+
+ ====================================================================================================/
+
+
+/====================================================================================================
+    [C] R U D - CREATE => INSERT (SQL)
+ ====================================================================================================
+
+    // CREATE A NEW ROW
+    INSERT INTO employees (first_name, last_name, gender, birth_date, hire_date)
+    VALUES ('Othman', 'Turki', 'M', '1995-07-18', '2022-03-28');
+
+    // CREATE A NEW ROW WITH (emp_no = MAX NUMBER OF emp_no + 1)
+    INSERT INTO employees (first_name, last_name, emp_no, gender, birth_date, hire_date)
+    SELECT
+        'Othman' AS first_name,
+        'Turki' AS last_name,
+        (MAX(emp_no) + 1) AS emp_no,
+        'M' AS gender,
+        '1995-07-18' AS birth_date,
+        '2022-03-28' AS hire_date
+    FROM employees;
+
+    // GET THE 10 MAX SALARIES EMPLOYEES (DUPLICATE EMPLOYEES)
+    SELECT E.emp_no, E.first_name, E.last_name, S.salary FROM employees AS E
+    INNER JOIN salaries AS S
+    ON E.emp_no = S.emp_no
+    ORDER BY S.salary DESC LIMIT 10;
+
+    // GET THE 10 MAX SALARIES EMPLOYEES (REMOVE DUPLICATE EMPLOYEES)
+    SELECT E.emp_no, E.first_name, E.last_name, MAX(S.salary) AS maxSalary FROM employees AS E
+    INNER JOIN salaries AS S
+    ON E.emp_no = S.emp_no
+    GROUP BY E.emp_no, E.first_name, E.last_name
+    ORDER BY maxSalary DESC
+    LIMIT 10;
+
+ ====================================================================================================/
+
+
+/====================================================================================================
+    C R [U] D - UPDATE => UPDATE (SQL)
+ ====================================================================================================
+
+    // UPDATE A ROW
+    UPDATE employees SET emp_no = 500000 WHERE first_name = "Othman" AND last_name = "Turki";
+
+ ====================================================================================================/
+
+
+/====================================================================================================
+    C R U [D] - DELETE => DELETE (SQL)
+ ====================================================================================================
+
+    // DELETE A ROW
+    DELETE FROM titles WHERE emp_no = 500001;
+    DELETE FROM employees WHERE first_name = "Othman" AND last_name = "Turki";
+
+ ====================================================================================================/
